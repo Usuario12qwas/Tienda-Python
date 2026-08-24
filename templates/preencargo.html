@@ -186,11 +186,11 @@
             <form action="/procesar-pedido" method="POST">
                 <div id="Cant">
                     <label for="cantidadP">Cantidad</label>
-                    <input id="cantidadP" type="number" placeholder="Max:10" min="1" max="10">
+                    <input id="cantidadP" type="number" name="cantidad" placeholder="Max:10" min="1" max="10" required>
                 </div>
                 <div id="nom">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" type="text">
+                    <input id="nombre" type="text" name="nombre" required>
                 </div>
                 <div id="com">
                     <label for="coment">Comentario</label>
