@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Pedidos</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <div style="background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; border: 1px solid #dcd6df;">
+        <h1 style="color: #4a4e69; text-align: center; margin-bottom: 20px;">📦 Pedidos Guardados</h1>
+        
+        <ul style="list-style: none; padding: 0;">
+            {% for pedido in pedidos %}
+                <li style="background: #f4f4f9; margin-bottom: 15px; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; border-left: 5px solid #9a8c98;">
+                    <strong>{{ pedido.nombre }}</strong>
+                    <span>{{ pedido.cantidad }} u.</span>
+                    <span style="color: #4a4e69; font-weight: bold;">${{ pedido.total }}</span>
+                </li>
+            {% else %}
+                <p style="text-align: center; color: #b0a8b9;">No hay pedidos guardados aún.</p>
+            {% endfor %}
+        </ul>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/preencargo" style="display: inline-block; padding: 12px 25px; background: #4a4e69; color: white; text-decoration: none; border-radius: 10px; font-weight: bold;">➕ Nuevo Pedido</a>
+        </div>
+    </div>
+
+</body>
+</html>
