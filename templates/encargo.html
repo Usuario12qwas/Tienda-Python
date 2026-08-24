@@ -88,6 +88,15 @@
                 <span>Total:</span>
                 <span>${{ total }}</span>
             </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+                <a href="/preencargo" style="padding: 10px 20px; background-color: #9a8c98; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">Borrar</a>
+                <form action="/guardar-pedido" method="POST" style="margin: 0; padding: 0; box-shadow: none; border: none; width: auto; flex-direction: row;">
+                    <input type="hidden" name="nombre" value="{{ nombre }}">
+                    <input type="hidden" name="cantidad" value="{{ cantidad }}">
+                    <input type="hidden" name="total" value="{{ total }}">
+                    <button type="submit" style="margin: 0; padding: 10px 20px; background-color: #4a4e69; width: auto;">Guardar</button>
+                </form>
+            </div>
     </div>
 </body>
 </html>
