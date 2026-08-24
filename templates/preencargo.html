@@ -1,178 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encargo</title>
+    <title>Preencargo</title>
     <style>
-        #ficha1 {
-            width: 80%;
-            max-width: 1000px;
-            height: 90vh;
-            margin: 20px auto;
-            background-color: rgb(183, 197, 197);
-            padding: 5px;
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: rgb(187, 182, 182);
+            padding: 20px;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            text-align: center;
+            min-height: 100vh;
+        }
+        #ficha1 {
+            width: 100%;
+            max-width: 900px;
+            background-color: rgb(183, 197, 197);
+            padding: 25px;
             border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        #imagen {
+            width: 100%;
+            max-width: 300px;
         }
         img {
-            width: 80%;
-            max-width: 1000px;
-            height: 35vh;
-            margin: 20px auto;
-            border-radius: 1000px 1000px 1000px 100px;
+            width: 100%;
+            height: auto;
+            border-radius: 100px 100px 100px 20px;
+            display: block;
+            object-fit: cover;
         }
         #texto {
-            background-color: rgb(183, 197, 196);
-            width: 80%;
-            max-width: 1000px;
-            margin: 10px auto;
-            height: 31vh;
-            padding: 5px;
-            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        #form {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .campo {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            gap: 10px;
+        }
+        .campo label {
+            font-weight: bold;
+            width: 30%;
+        }
+        .campo input, .campo textarea {
+            width: 70%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: inherit;
         }
         textarea {
             resize: none;
-        }
-        #Cant {
-            display: flex;
-            gap: 10px;
-            width: 85%;
-            max-width: 1000px;
-            height: 7vh;
-            margin: 5px auto;
-
+            height: 60px;
         }
         #botones {
-            background-color: rgb(183, 197, 196);
-            width: 100%;
-            height: 8vh;
-            margin: 20px auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 10px;
         }
-        #cantidadP {
-            width: 100%;
-            height: 3vh;
-            margin: 12px auto;
-        }
-        #borrar {
-            width: 40%;
-            max-width: 100px;
-            height: 3vh;
-            margin: 20px auto;
+        #borrar, #continuar {
+            width: 48%;
+            padding: 10px;
             background-color: rgb(250, 226, 243);
-            font-size: 80%;
+            border: 1px solid #bbb;
             border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
         }
-        #continuar {
-            width: 40%;
-            max-width: 100px;
-            height: 3vh;
-            margin: 20px auto;
-            background-color: rgb(250, 226, 243);
-            font-size: 80%;
-            border-radius: 10px;
-        }
-        @media (min-width: 786px) {
+
+        @media (min-width: 768px) {
             #ficha1 {
-                width: 80%;
-                max-width: 1000px;
-                height: 80vh;
-                margin: 50px auto;
-                background-color: rgb(183, 197, 197);
-                padding: 20px;
+                flex-direction: row;
                 align-items: center;
-                border-radius: 20px;
-                display: flex;
+                padding: 40px;
             }
-            img {
-                width: 120%;
-                max-width: 1000px;
-                height: 50vh;
-                margin: 20px auto;
-                border-radius: 1000px 1000px 1000px 100px;
+            #imagen {
+                width: 40%;
+                max-width: 350px;
             }
             #texto {
-                background-color: rgb(183, 197, 196);
                 width: 60%;
-                max-width: 1000px;
-                margin: 20px auto;
-                height: 50vh;
-                padding: 5px;
-                text-align: center;
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-            textarea {
-                resize: none;
-            }
-            #Cant {
-                display: flex;
-                gap: 0px;
-                width: 90%;
-                max-width: 1000px;
-                height: 10vh;
-                margin: 5px auto;
-            }
-            #botones {
-                background-color: rgb(183, 197, 196);
-                width: 100%;
-                height: 8vh;
-                margin: 10 auto;
-                text-align: center;
-                gap: 60px;
-            }
-            #cantidadP {
-                width: 60%;
-                height: 3vh;
-                margin: 0 auto;
-            }
-            #borrar {
-                width: 40%;
-                max-width: 100px;
-                height: 3vh;
-                margin: 20px auto;
-                background-color: rgb(250, 226, 243);
-                font-size: 80%;
-                border-radius: 10px;
-            }
-            #continuar {
-                width: 40%;
-                max-width: 100px;
-                height: 3vh;
-                margin: 20px auto;
-                background-color: rgb(250, 226, 243);
-                font-size: 80%;
-                border-radius: 10px;
-            }
-            #form {
-                display: flex;
-                flex-direction: column;
-                width: 90%;
-                max-width: 450px;
-                gap: 0px; 
-            }
-            #nom {
-                display: flex;
-                gap: 30px;
-                width: 90%;
-                max-width: 1000px;
-                height: 10vh;
-                margin: 5px auto; 
-            }
-            #com {
-                display: flex;
-                gap: 20px;
-                width: 90%;
-                max-width: 1000px;
-                height: 5vh;
-                margin: 5px auto;
-            }
-            #nombre {
-                width: 60%;
-                height: 3vh;
             }
         }
     </style>
@@ -180,21 +108,21 @@
 <body>
     <div id="ficha1">
         <div id="imagen">
-            <img src="{{ url_for('static', filename='manzana2.jpg') }}">
+            <img src="{{ url_for('static', filename='manzana2.jpg') }}" alt="Manzana Encaramelada">
         </div>
         <div id="texto">
-            <form action="/procesar-pedido" method="POST">
-                <div id="Cant">
+            <form id="form" action="/procesar-pedido" method="POST">
+                <div class="campo">
                     <label for="cantidadP">Cantidad</label>
-                    <input id="cantidadP" type="number" name="cantidad" placeholder="Max:10" min="1" max="10" required>
+                    <input id="cantidadP" name="cantidad" type="number" placeholder="Max:10" min="1" max="10" required>
                 </div>
-                <div id="nom">
+                <div class="campo">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" type="text" name="nombre" required>
+                    <input id="nombre" name="nombre" type="text" required>
                 </div>
-                <div id="com">
+                <div class="campo">
                     <label for="coment">Comentario</label>
-                    <textarea id="coment" placeholder="Comentario Adicional"></textarea>
+                    <textarea id="coment" name="comentario" placeholder="Comentario Adicional"></textarea>
                 </div>
                 <div id="botones">
                     <button id="borrar" type="reset">Borrar</button>
@@ -202,7 +130,6 @@
                 </div>
             </form>
         </div>
-
     </div>
 </body>
-</html
+</html>
