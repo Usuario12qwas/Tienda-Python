@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura Electrónica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e4e2e6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .invoice-card {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #dcd6df;
+        }
+        .invoice-header {
+            background-color: #9a8c98;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .invoice-body {
+            padding: 25px;
+        }
+        .field-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0eef2;
+            font-size: 15px;
+            color: #4a4e69;
+        }
+        .field-row span.label {
+            font-weight: bold;
+        }
+        .field-row span.line {
+            color: #b0a8b9;
+            letter-spacing: 2px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0 5px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #22223b;
+            margin-top: 10px;
+            border-top: 2px solid #9a8c98;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invoice-card">
+        <div class="invoice-header">
+            FACTURA
+        </div>
+        <div class="invoice-body">
+            <div class="field-row">
+                <span class="label">Nombre:</span>
+                <span class="line">____________________</span>
+            </div>
+            <div class="field-row">
+                <span class="label">Teléfono:</span>
+                <span class="line">____________________</span>
+            </div>
+            <div class="field-row">
+                <span class="label">Producto:</span>
+                <span class="line">____________________</span>
+            </div>
+            <div class="field-row">
+                <span class="label">Cantidad:</span>
+                <span class="line">____________________</span>
+            </div>
+            <div class="total-row">
+                <span>Total:</span>
+                <span>$_________</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

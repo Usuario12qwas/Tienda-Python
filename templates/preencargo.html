@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #ficha1 {
+            width: 80%;
+            max-width: 1000px;
+            height: 90vh;
+            margin: 20px auto;
+            background-color: rgb(183, 197, 197);
+            padding: 5px;
+            align-items: center;
+            text-align: center;
+            border-radius: 20px;
+        }
+        img {
+            width: 80%;
+            max-width: 1000px;
+            height: 35vh;
+            margin: 20px auto;
+            border-radius: 1000px 1000px 1000px 100px;
+        }
+        #texto {
+            background-color: rgb(183, 197, 196);
+            width: 80%;
+            max-width: 1000px;
+            margin: 10px auto;
+            height: 31vh;
+            padding: 5px;
+            text-align: center;
+            align-items: center;
+        }
+        textarea {
+            resize: none;
+        }
+        #Cant {
+            display: flex;
+            gap: 10px;
+            width: 85%;
+            max-width: 1000px;
+            height: 7vh;
+            margin: 5px auto;
+
+        }
+        #botones {
+            background-color: rgb(183, 197, 196);
+            width: 100%;
+            height: 8vh;
+            margin: 20px auto;
+        }
+        #cantidadP {
+            width: 100%;
+            height: 3vh;
+            margin: 12px auto;
+        }
+        #borrar {
+            width: 40%;
+            max-width: 100px;
+            height: 3vh;
+            margin: 20px auto;
+            background-color: rgb(250, 226, 243);
+            font-size: 80%;
+            border-radius: 10px;
+        }
+        #continuar {
+            width: 40%;
+            max-width: 100px;
+            height: 3vh;
+            margin: 20px auto;
+            background-color: rgb(250, 226, 243);
+            font-size: 80%;
+            border-radius: 10px;
+        }
+        @media (min-width: 786px) {
+            #ficha1 {
+                width: 80%;
+                max-width: 1000px;
+                height: 80vh;
+                margin: 50px auto;
+                background-color: rgb(183, 197, 197);
+                padding: 20px;
+                align-items: center;
+                border-radius: 20px;
+                display: flex;
+            }
+            img {
+                width: 120%;
+                max-width: 1000px;
+                height: 50vh;
+                margin: 20px auto;
+                border-radius: 1000px 1000px 1000px 100px;
+            }
+            #texto {
+                background-color: rgb(183, 197, 196);
+                width: 60%;
+                max-width: 1000px;
+                margin: 20px auto;
+                height: 50vh;
+                padding: 5px;
+                text-align: center;
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
+            textarea {
+                resize: none;
+            }
+            #Cant {
+                display: flex;
+                gap: 0px;
+                width: 90%;
+                max-width: 1000px;
+                height: 10vh;
+                margin: 5px auto;
+            }
+            #botones {
+                background-color: rgb(183, 197, 196);
+                width: 100%;
+                height: 8vh;
+                margin: 10 auto;
+                text-align: center;
+                gap: 60px;
+            }
+            #cantidadP {
+                width: 60%;
+                height: 3vh;
+                margin: 0 auto;
+            }
+            #borrar {
+                width: 40%;
+                max-width: 100px;
+                height: 3vh;
+                margin: 20px auto;
+                background-color: rgb(250, 226, 243);
+                font-size: 80%;
+                border-radius: 10px;
+            }
+            #continuar {
+                width: 40%;
+                max-width: 100px;
+                height: 3vh;
+                margin: 20px auto;
+                background-color: rgb(250, 226, 243);
+                font-size: 80%;
+                border-radius: 10px;
+            }
+            #form {
+                display: flex;
+                flex-direction: column;
+                width: 90%;
+                max-width: 450px;
+                gap: 0px; 
+            }
+            #nom {
+                display: flex;
+                gap: 30px;
+                width: 90%;
+                max-width: 1000px;
+                height: 10vh;
+                margin: 5px auto; 
+            }
+            #com {
+                display: flex;
+                gap: 20px;
+                width: 90%;
+                max-width: 1000px;
+                height: 5vh;
+                margin: 5px auto;
+            }
+            #nombre {
+                width: 60%;
+                height: 3vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="ficha1">
+        <div id="imagen">
+            <img src="{{ url_for('static', filename='manzana2.jpg') }}">
+        </div>
+        <div id="texto">
+            <form id="form">
+                <div id="Cant">
+                    <label for="cantidadP">Cantidad</label>
+                    <input id="cantidadP" type="number" placeholder="Max:10" min="1" max="10">
+                </div>
+                <div id="nom">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" type="text">
+                </div>
+                <div id="com">
+                    <label for="coment">Comentario</label>
+                    <textarea id="coment" placeholder="Comentario Adicional"></textarea>
+                </div>
+                <div id="botones">
+                    <button id="borrar" type="reset">Borrar</button>
+                    <button id="continuar" type="submit">Siguiente</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html

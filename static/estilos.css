@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --primary-color: #e63946;
+  --primary-hover: #c1121f;
+  --bg-color: #fff8f5;
+  --card-bg: #ffffff;
+  --border-color: #ffd8cc;
+  --border-focus: #ff4e50;
+  --text-main: #2b2d42;
+  --shadow-glow: 0 12px 35px rgba(230, 57, 70, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(#ffded4 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+form {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 400px;
+  padding: 35px 30px;
+  border-radius: 24px;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-glow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+h1 {
+  text-align: center;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+form label,
+label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background-color: #fff9f8;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+input:focus {
+  background-color: #ffffff;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 4px rgba(255, 78, 80, 0.15);
+}
+
+button,
+input[type="submit"] {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #e63946 0%, #d62828 100%);
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(230, 57, 70, 0.3);
+  transition: all 0.2s ease;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background: linear-gradient(135deg, #d62828 0%, #9e1c1c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(230, 57, 70, 0.4);
+}
+
+button:active,
+input[type="submit"]:active {
+  transform: translateY(0);
+}
+
+p {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.bienvenida {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 30px;
+  border-radius: 24px;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-glow);
+  text-align: center;
+}
+
+.bienvenida h1 {
+  margin-bottom: 15px;
+}
+
+.bienvenida p {
+  margin-bottom: 25px;
+}
+
+.bienvenida a {
+  display: inline-block;
+  padding: 12px 25px;
+  background: var(--primary-color);
+  color: #ffffff;
+  border-radius: 12px;
+  transition: 0.2s ease;
+}
+
+.bienvenida a:hover {
+  background: var(--primary-hover);
+  color: #ffffff;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+
+  form {
+    padding: 30px 20px;
+  }
+
+  .bienvenida {
+    padding: 30px 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
