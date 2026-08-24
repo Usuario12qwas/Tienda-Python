@@ -183,7 +183,7 @@
             <img src="{{ url_for('static', filename='manzana2.jpg') }}">
         </div>
         <div id="texto">
-            <form id="form">
+            <form action="/procesar-pedido" method="POST">
                 <div id="Cant">
                     <label for="cantidadP">Cantidad</label>
                     <input id="cantidadP" type="number" placeholder="Max:10" min="1" max="10">
