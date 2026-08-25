@@ -60,18 +60,15 @@
         }
         .campo label {
             font-weight: bold;
-            width: 30%;
+            width: 35%;
         }
-        .campo input, .campo textarea {
-            width: 70%;
+        .campo input, .campo select {
+            width: 65%;
             padding: 8px;
             border-radius: 8px;
             border: 1px solid #ccc;
             font-family: inherit;
-        }
-        textarea {
-            resize: none;
-            height: 60px;
+            background-color: white;
         }
         #botones {
             display: flex;
@@ -113,21 +110,31 @@
         <div id="texto">
             <form id="form" action="/procesar-pedido" method="POST">
                 <div class="campo">
-                    <label for="cantidadP">Cantidad</label>
-                    <input id="cantidadP" name="cantidad" type="number" placeholder="Max:10" min="1" max="10" required>
-                </div>
-                <div class="campo">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" name="nombre" type="text" required>
+                    <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
                 </div>
                 <div class="campo">
-                    <label for="coment">Comentario</label>
-                    <textarea id="coment" name="comentario" placeholder="Comentario Adicional"></textarea>
+                    <label for="telefono">Teléfono</label>
+                    <input id="telefono" name="telefono" type="tel" placeholder="Número de contacto" required>
                 </div>
-               <div id="botones">
+                <div class="campo">
+                    <label for="cantidad">Cantidad</label>
+                    <input id="cantidad" name="cantidad" type="number" placeholder="Max: 10" min="1" max="10" required>
+                </div>
+                <div class="campo">
+                    <label for="manzana">Manzana</label>
+                    <select id="manzana" name="manzana" required>
+                        <option value="" disabled selected>Selecciona tipo</option>
+                        <option value="Caramelo Clásico">Caramelo Clásico</option>
+                        <option value="Caramelo con Chispas">Caramelo con Chispas</option>
+                        <option value="Caramelo con Chocolate">Caramelo con Chocolate</option>
+                        <option value="Caramelo con Coco">Caramelo con Coco</option>
+                    </select>
+                </div>
+                <div id="botones">
                     <button id="borrar" type="button" onclick="window.location.href='/panel'">Panel</button>
                     <button id="continuar" type="submit">Siguiente</button>
-               </div>
+                </div>
             </form>
         </div>
     </div>
