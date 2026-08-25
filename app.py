@@ -4,7 +4,8 @@ from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 
-URL_SUPABASE = "postgresql://postgres.ffozwpayyvzkrcjfhnuj:yRi_4G?zMGZLD-B@aws-0-us-east-2.pooler.supabase.com:5432/postgres"
+# Cambio 1: El puerto ahora es 6543
+URL_SUPABASE = "postgresql://postgres.ffozwpayyvzkrcjfhnuj:yRi_4G?zMGZLD-B@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
 
 def conectar_bd():
     return psycopg2.connect(URL_SUPABASE)
@@ -19,8 +20,8 @@ def panel():
     conexion = conectar_bd()
     cursor = conexion.cursor(cursor_factory=RealDictCursor)
     
-    # Traemos todos los pedidos ordenados del más nuevo al más viejo
-    cursor.execute("SELECT * FROM pedidos ORDER BY id DESC")
+    # Cambio 2: Traemos los datos de la nueva tabla 'pedidos_manzanas'
+    cursor.execute("SELECT * FROM pedidos_manzanas ORDER BY id DESC")
     mis_pedidos = cursor.fetchall()
     
     cursor.close()
@@ -36,31 +37,34 @@ def preencargo():
 # 3. Procesar los datos y mostrar la factura
 @app.route("/procesar-pedido", methods=["POST"])
 def procesar_pedido():
-    # Recibimos los datos del formulario de preencargo
+    # Cambio 3: Recibimos TODOS los datos del formulario de preencargo
     nombre = request.form["nombre"]
+    telefono = request.form["telefono"]
     cantidad = int(request.form["cantidad"])
+    tipo_manzana = request.form["manzana"] # "manzana" es el nombre en tu HTML
     
     # Calculamos el total
     precio_por_manzana = 3
     total = cantidad * precio_por_manzana
     
     # Pasamos los datos a la plantilla de la factura
-    return render_template("encargo.html", nombre=nombre, cantidad=cantidad, total=total)
+    return render_template("encargo.html", nombre=nombre, telefono=telefono, cantidad=cantidad, tipo_manzana=tipo_manzana, total=total)
 
 # 4. Guardar definitivamente en Supabase
 @app.route("/guardar-pedido", methods=["POST"])
 def guardar_pedido():
-    # Recibimos los datos ocultos de la factura
+    # Cambio 4: Recibimos los datos ocultos de la factura
     nombre = request.form["nombre"]
+    telefono = request.form["telefono"]
     cantidad = request.form["cantidad"]
-    total = request.form["total"]
+    tipo_manzana = request.form["tipo_manzana"]
     
     conexion = conectar_bd()
     cursor = conexion.cursor()
     
-    # Insertamos en la tabla
-    sql = "INSERT INTO pedidos (nombre, cantidad, total) VALUES (%s, %s, %s)"
-    cursor.execute(sql, (nombre, cantidad, total))
+    # Insertamos en la nueva tabla 'pedidos_manzanas'
+    sql = "INSERT INTO pedidos (nombre, telefono, cantidad, tipo_manzana) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql, (nombre, telefono, cantidad, tipo_manzana))
     conexion.commit()
     
     cursor.close()
