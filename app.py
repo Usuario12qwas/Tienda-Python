@@ -52,43 +52,69 @@ def procesar_pedido():
 # 4. Guardar en Supabase, crear PDF y redirigir a WhatsApp
 @app.route("/guardar-pedido", methods=["POST"])
 def guardar_pedido():
-    # Recibimos los datos ocultos (ahora incluimos el total)
     nombre = request.form["nombre"]
-    telefono = request.form["telefono"]
+    telefono_input = request.form["telefono"] # El cliente solo pone 8 dígitos
     cantidad = request.form["cantidad"]
     tipo_manzana = request.form["tipo_manzana"]
     total = request.form["total"]
     
-    # --- A. GUARDAR EN BASE DE DATOS ---
+    # --- A. MAGIA CON EL TELÉFONO ---
+    # Limpiamos espacios o guiones por si el cliente los puso por error
+    tel_limpio = telefono_input.replace("-", "").replace(" ", "")
+    # Formato bonito para el PDF (Ej: 7777-8888)
+    telefono_pdf = f"{tel_limpio[:4]}-{tel_limpio[4:]}"
+    # Formato internacional para WhatsApp (Ej: 50377778888)
+    telefono_wa = f"503{tel_limpio}"
+    
+    # --- B. GUARDAR EN BASE DE DATOS ---
     conexion = conectar_bd()
     cursor = conexion.cursor()
+    # Guardamos el teléfono limpio (8 dígitos) en la base de datos
     sql = "INSERT INTO pedidos_manzanas (nombre, telefono, cantidad, tipo_manzana) VALUES (%s, %s, %s, %s)"
-    cursor.execute(sql, (nombre, telefono, cantidad, tipo_manzana))
+    cursor.execute(sql, (nombre, tel_limpio, cantidad, tipo_manzana))
     conexion.commit()
     cursor.close()
     conexion.close()
 
-    # --- B. CREAR EL PDF ---
+    # --- C. CREAR EL PDF MEJORADO ---
     pdf = FPDF()
     pdf.add_page()
     
-    # Título
+    # Dibujar un marco tipo ticket (x=15, y=15, ancho=180, alto=130)
+    pdf.rect(15, 15, 180, 130)
+    
+    pdf.ln(20) # Espacio desde arriba
+    
+    # Título centrado
+    pdf.set_font("Arial", 'B', 20)
+    pdf.cell(0, 10, txt="FACTURA DE PEDIDO", ln=True, align='C')
+    pdf.set_font("Arial", 'I', 12)
+    pdf.cell(0, 10, txt="Manzanas Encarameladas", ln=True, align='C')
+    pdf.ln(15) # Espacio después del título
+    
+    # Datos del cliente (con un margen a la izquierda para que no quede pegado al borde)
+    pdf.set_font("Arial", size=14)
+    pdf.set_x(30)
+    pdf.cell(0, 12, txt=f"Cliente: {nombre}", ln=True)
+    pdf.set_x(30)
+    pdf.cell(0, 12, txt=f"Telefono: {telefono_pdf}", ln=True)
+    pdf.set_x(30)
+    pdf.cell(0, 12, txt=f"Producto: Manzanas tipo {tipo_manzana}", ln=True)
+    pdf.set_x(30)
+    pdf.cell(0, 12, txt=f"Cantidad: {cantidad} unidades", ln=True)
+    
+    # Total a pagar (en negrita)
+    pdf.ln(5)
     pdf.set_font("Arial", 'B', 16)
-    pdf.cell(200, 10, txt="FACTURA DE PEDIDO", ln=True, align='C')
-    pdf.ln(10)
+    pdf.set_x(30)
+    pdf.cell(0, 12, txt=f"TOTAL A PAGAR: ${total}", ln=True)
     
-    # Datos
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt=f"Cliente: {nombre}", ln=True)
-    pdf.cell(200, 10, txt=f"Telefono: {telefono}", ln=True)
-    pdf.cell(200, 10, txt=f"Producto: Manzanas tipo {tipo_manzana}", ln=True)
-    pdf.cell(200, 10, txt=f"Cantidad: {cantidad} unidades", ln=True)
-    
-    # Total
-    pdf.set_font("Arial", 'B', 12)
-    pdf.cell(200, 10, txt=f"TOTAL A PAGAR: ${total}", ln=True)
+    # Mensaje de despedida centrado
+    pdf.ln(15)
+    pdf.set_font("Arial", 'I', 12)
+    pdf.cell(0, 10, txt="¡Gracias por tu preferencia!", ln=True, align='C')
 
-    # NUEVO: Cambiamos "facturas" por "pdfs" para que Python cree la carpeta limpia
+    # Crear carpeta si no existe
     if not os.path.exists("static/pdfs"):
         os.makedirs("static/pdfs")
         
@@ -97,16 +123,14 @@ def guardar_pedido():
     ruta_pdf = f"static/pdfs/{nombre_archivo}"
     pdf.output(ruta_pdf)
 
-    # --- C. GENERAR LINK DE WHATSAPP ---
-    # También actualizamos el link para que coincida con "pdfs"
+    # --- D. GENERAR LINK DE WHATSAPP ---
     link_factura = f"https://tienda-python.onrender.com/{ruta_pdf}"
     mensaje = f"🍎 ¡Hola {nombre}! Tu pedido de {cantidad} manzanas ({tipo_manzana}) esta confirmado. El total es ${total}. Puedes descargar tu factura aqui: {link_factura}"
     
-    # Codificamos el texto para la URL
     mensaje_codificado = urllib.parse.quote(mensaje)
-    link_whatsapp = f"https://wa.me/{telefono}?text={mensaje_codificado}"
+    # Usamos la variable telefono_wa que ya tiene el 503
+    link_whatsapp = f"https://wa.me/{telefono_wa}?text={mensaje_codificado}"
     
-    # Nos redirige a WhatsApp
     return redirect(link_whatsapp)
 
 # 5. Eliminar un pedido
