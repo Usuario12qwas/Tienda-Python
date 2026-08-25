@@ -88,16 +88,17 @@ def guardar_pedido():
     pdf.set_font("Arial", 'B', 12)
     pdf.cell(200, 10, txt=f"TOTAL A PAGAR: ${total}", ln=True)
 
-    # Crear carpeta si no existe
-    if not os.path.exists("static/facturas"):
-        os.makedirs("static/facturas")
+    # NUEVO: Cambiamos "facturas" por "pdfs" para que Python cree la carpeta limpia
+    if not os.path.exists("static/pdfs"):
+        os.makedirs("static/pdfs")
         
-    # Guardar el PDF con el nombre del cliente
+    # Guardar el PDF
     nombre_archivo = f"factura_{nombre.replace(' ', '_')}.pdf"
-    ruta_pdf = f"static/facturas/{nombre_archivo}"
+    ruta_pdf = f"static/pdfs/{nombre_archivo}"
     pdf.output(ruta_pdf)
 
     # --- C. GENERAR LINK DE WHATSAPP ---
+    # También actualizamos el link para que coincida con "pdfs"
     link_factura = f"https://tienda-python.onrender.com/{ruta_pdf}"
     mensaje = f"🍎 ¡Hola {nombre}! Tu pedido de {cantidad} manzanas ({tipo_manzana}) esta confirmado. El total es ${total}. Puedes descargar tu factura aqui: {link_factura}"
     
