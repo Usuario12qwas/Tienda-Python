@@ -73,5 +73,22 @@ def guardar_pedido():
     # Regresamos al panel donde ya se verá el nuevo pedido
     return redirect("/panel")
 
+    # 5. Eliminar un pedido
+@app.route("/eliminar-pedido/<int:id>", methods=["POST"])
+def eliminar_pedido(id):
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
+    
+    # Borramos el pedido usando su ID único
+    sql = "DELETE FROM pedidos_manzanas WHERE id = %s"
+    cursor.execute(sql, (id,))
+    conexion.commit()
+    
+    cursor.close()
+    conexion.close()
+    
+    # Recargamos el panel actualizado
+    return redirect("/panel")
+
 if __name__ == "__main__":
     app.run(debug=True)
