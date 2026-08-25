@@ -4,8 +4,7 @@ from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 
-# TU CONEXIÓN A SUPABASE
-URL_SUPABASE = "postgresql://postgres:yRi_4G?zMGZLD-B@db.ffozwpayyvzkrcjfhnuj.supabase.co:5432/postgres"
+URL_SUPABASE = "postgresql://postgres.ffozwpayyvzkrcjfhnuj:yRi_4G?zMGZLD-B@aws-0-us-east-2.pooler.supabase.com:5432/postgres"
 
 def conectar_bd():
     return psycopg2.connect(URL_SUPABASE)
