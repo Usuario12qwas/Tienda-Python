@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preencargo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: rgb(187, 182, 182);
+            padding: 20px;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #ficha1 {
+            width: 100%;
+            max-width: 900px;
+            background-color: rgb(183, 197, 197);
+            padding: 25px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        #imagen {
+            width: 100%;
+            max-width: 300px;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 100px 100px 100px 20px;
+            display: block;
+            object-fit: cover;
+        }
+        #texto {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        #form {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .campo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .campo label {
+            font-weight: bold;
+            width: 35%;
+        }
+        .campo input, .campo select {
+            width: 65%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            background-color: white;
+        }
+        #botones {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        #borrar, #continuar {
+            width: 48%;
+            padding: 10px;
+            background-color: rgb(250, 226, 243);
+            border: 1px solid #bbb;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
+        @media (min-width: 768px) {
+            #ficha1 {
+                flex-direction: row;
+                align-items: center;
+                padding: 40px;
+            }
+            #imagen {
+                width: 40%;
+                max-width: 350px;
+            }
+            #texto {
+                width: 60%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="ficha1">
+        <div id="imagen">
+            <img src="{{ url_for('static', filename='manzana.jpeg') }}" alt="Manzana Encaramelada">
+        </div>
+        <div id="texto">
+            <form id="form" action="/procesar-pedido" method="POST">
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
+                </div>
+                <div class="campo">
+                    <label for="telefono">Teléfono</label>
+                    <input id="telefono" name="telefono" type="tel" placeholder="Número de contacto" required>
+                </div>
+                <div class="campo">
+                    <label for="cantidad">Cantidad</label>
+                    <input id="cantidad" name="cantidad" type="number" placeholder="Max: 10" min="1" max="10" required>
+                </div>
+                <div class="campo">
+                    <label for="manzana">Manzana</label>
+                    <select id="manzana" name="manzana" required>
+                        <option value="" disabled selected>Selecciona tipo</option>
+                        <option value="Caramelo Clásico">Caramelo Clásico</option>
+                        <option value="Caramelo con Chispas">Caramelo con Chispas</option>
+                        <option value="Caramelo con Chocolate">Caramelo con Chocolate</option>
+                        <option value="Caramelo con Coco">Caramelo con Coco</option>
+                    </select>
+                </div>
+                <div id="botones">
+                    <button id="borrar" type="button" onclick="window.location.href='/panel'">Panel</button>
+                    <button id="continuar" type="submit">Siguiente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
