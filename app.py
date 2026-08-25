@@ -1,53 +1,18 @@
 from flask import Flask, request, render_template, redirect
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 
-# Esta lista será nuestra "base de datos temporal"
-pedidos_guardados = []
+# TU CONEXIÓN A SUPABASE
+URL_SUPABASE = "postgresql://postgres:yRi_4G?zMGZLD-B@db.ffozwpayyvzkrcjfhnuj.supabase.co:5432/postgres"
+
+def conectar_bd():
+    return psycopg2.connect(URL_SUPABASE)
 
 @app.route("/")
 def inicio():
     return render_template("Inicio.html")
-
-@app.route("/preencargo")
-def preencargo():
-    return render_template("preencargo.html")
-
-@app.route("/procesar-pedido", methods=["POST"])
-def procesar_pedido():
-    nombre_cliente = request.form["nombre"]
-    cantidad_manzanas = int(request.form["cantidad"])
-    
-    precio_por_unidad = 3
-    total_a_pagar = cantidad_manzanas * precio_por_unidad
-    
-    return render_template("encargo.html", 
-                           nombre=nombre_cliente, 
-                           cantidad=cantidad_manzanas, 
-                           total=total_a_pagar)
-
-# --- NUEVAS RUTAS ---
-
-@app.route("/guardar-pedido", methods=["POST"])
-def guardar_pedido():
-    # Atrapamos los datos ocultos que nos enviará la factura
-    nombre = request.form["nombre"]
-    cantidad = request.form["cantidad"]
-    total = request.form["total"]
-    
-    # Guardamos el pedido en nuestra lista de Python
-    nuevo_pedido = {"nombre": nombre, "cantidad": cantidad, "total": total}
-    pedidos_guardados.append(nuevo_pedido)
-    
-    # Redirigimos al usuario al panel de control
-    return redirect("/panel")
-
-@app.route("/panel")
-def panel():
-    # Mostramos la página del panel enviándole la lista de pedidos
-    return render_template("panel.html", pedidos=pedidos_guardados)
-
-    # --- RUTAS DE LA TIENDA Y PEDIDOS ---
 
 # 1. Ver el panel con los pedidos de la base de datos
 @app.route("/panel")
@@ -76,7 +41,7 @@ def procesar_pedido():
     nombre = request.form["nombre"]
     cantidad = int(request.form["cantidad"])
     
-    # Calculamos el total (Aquí asumo que cada manzana cuesta $3, puedes cambiarlo)
+    # Calculamos el total
     precio_por_manzana = 3
     total = cantidad * precio_por_manzana
     
@@ -94,7 +59,7 @@ def guardar_pedido():
     conexion = conectar_bd()
     cursor = conexion.cursor()
     
-    # Insertamos en la tabla que acabas de crear
+    # Insertamos en la tabla
     sql = "INSERT INTO pedidos (nombre, cantidad, total) VALUES (%s, %s, %s)"
     cursor.execute(sql, (nombre, cantidad, total))
     conexion.commit()
@@ -104,5 +69,6 @@ def guardar_pedido():
     
     # Regresamos al panel donde ya se verá el nuevo pedido
     return redirect("/panel")
+
 if __name__ == "__main__":
     app.run(debug=True)
