@@ -13,6 +13,7 @@
             min-height: 100vh;
             width: 100%;
             padding: 20px;
+            background-color: rgb(187, 182, 182); /* Fondo para que coincida con el resto */
         }
     </style>
 </head>
@@ -24,10 +25,22 @@
             
             <ul style="list-style: none; padding: 0;">
                 {% for pedido in pedidos %}
-                    <li style="background: #f4f4f9; margin-bottom: 15px; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; border-left: 5px solid #9a8c98;">
-                        <strong>{{ pedido.nombre }}</strong>
-                        <span>{{ pedido.cantidad }} u.</span>
-                        <span style="color: #4a4e69; font-weight: bold;">${{ pedido.total }}</span>
+                    <li style="background: #f4f4f9; margin-bottom: 15px; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; gap: 8px; border-left: 5px solid #9a8c98;">
+                        
+                        <!-- Fila 1: Nombre y Cantidad -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong style="font-size: 1.1em; color: #22223b;">{{ pedido.nombre }}</strong>
+                            <span style="background: #9a8c98; color: white; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.9em;">
+                                {{ pedido.cantidad }} u.
+                            </span>
+                        </div>
+
+                        <!-- Fila 2: Teléfono y Tipo de Manzana -->
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #4a4e69;">
+                            <span>📞 {{ pedido.telefono }}</span>
+                            <span>🍎 {{ pedido.tipo_manzana }}</span>
+                        </div>
+
                     </li>
                 {% else %}
                     <p style="text-align: center; color: #b0a8b9;">No hay pedidos guardados aún.</p>
