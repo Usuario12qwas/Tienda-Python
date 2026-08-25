@@ -13,7 +13,7 @@
             min-height: 100vh;
             width: 100%;
             padding: 20px;
-            background-color: rgb(187, 182, 182); /* Fondo para que coincida con el resto */
+            background-color: rgb(187, 182, 182);
         }
     </style>
 </head>
@@ -39,6 +39,15 @@
                         <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #4a4e69;">
                             <span>📞 {{ pedido.telefono }}</span>
                             <span>🍎 {{ pedido.tipo_manzana }}</span>
+                        </div>
+                        
+                        <!-- Fila 3: Botón de Eliminar -->
+                        <div style="display: flex; justify-content: flex-end; margin-top: 5px;">
+                            <form action="/eliminar-pedido/{{ pedido.id }}" method="POST" style="margin: 0; padding: 0;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este pedido?');">
+                                <button type="submit" style="background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: bold;">
+                                    🗑️ Eliminar
+                                </button>
+                            </form>
                         </div>
 
                     </li>
