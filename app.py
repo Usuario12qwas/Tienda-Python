@@ -44,7 +44,7 @@ def procesar_pedido():
     cantidad = int(request.form["cantidad"])
     tipo_manzana = request.form["manzana"]
     
-    precio_por_manzana = 3
+    precio_por_manzana = 1
     total = cantidad * precio_por_manzana
     
     return render_template("encargo.html", nombre=nombre, telefono=telefono, cantidad=cantidad, tipo_manzana=tipo_manzana, total=total)
