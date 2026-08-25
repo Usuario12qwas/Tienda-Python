@@ -63,7 +63,7 @@ def guardar_pedido():
     cursor = conexion.cursor()
     
     # Insertamos en la nueva tabla 'pedidos_manzanas'
-    sql = "INSERT INTO pedidos (nombre, telefono, cantidad, tipo_manzana) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO pedidos_manzanas (nombre, telefono, cantidad, tipo_manzana) VALUES (%s, %s, %s, %s)"
     cursor.execute(sql, (nombre, telefono, cantidad, tipo_manzana))
     conexion.commit()
     
