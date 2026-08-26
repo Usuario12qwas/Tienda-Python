@@ -4,7 +4,7 @@ from psycopg2.extras import RealDictCursor
 from fpdf import FPDF          # NUEVO: Para crear el PDF
 import urllib.parse            # NUEVO: Para crear el link de WhatsApp
 import os                      # NUEVO: Para crear carpetas
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -110,8 +110,10 @@ def guardar_pedido():
     cursor.close()
     conexion.close()
 
-    # --- C. CREAR EL PDF MEJORADO (CON FECHA Y DESGLOSE) ---
-    fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M")
+# --- C. CREAR EL PDF MEJORADO (CON FECHA Y DESGLOSE) ---
+    
+    # Ajustamos la hora a El Salvador (UTC - 6 horas)
+    fecha_actual = (datetime.utcnow() - timedelta(hours=6)).strftime("%d/%m/%Y %H:%M")
     
     pdf = FPDF()
     pdf.add_page()
@@ -126,9 +128,10 @@ def guardar_pedido():
     pdf.set_font("Arial", 'I', 12)
     pdf.cell(0, 10, txt="Manzanas Encarameladas - Sistema Web", ln=True, align='C')
     
-    # Fecha alineada a la derecha
+    # Fecha alineada a la derecha y dentro del cuadro
     pdf.set_font("Arial", '', 10)
-    pdf.cell(0, 10, txt=f"Fecha y Hora: {fecha_actual}", ln=True, align='R')
+    pdf.set_x(15) # Empezamos donde empieza el borde izquierdo
+    pdf.cell(175, 10, txt=f"Fecha y Hora: {fecha_actual}", ln=True, align='R') # Ancho de 175 para que no toque el borde derecho
     pdf.ln(10)
     
     # Datos del cliente y compra
