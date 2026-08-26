@@ -18,19 +18,26 @@ def conectar_bd():
 def inicio():
     return render_template("Inicio.html")
 
-# 1. Ver el panel con los pedidos de la base de datos
+# 1. Ver el panel con los pedidos de la base de datos Y EL INVENTARIO
 @app.route("/panel")
 def panel():
     conexion = conectar_bd()
-    cursor = conexion.cursor(cursor_factory=RealDictCursor)
     
-    cursor.execute("SELECT * FROM pedidos_manzanas ORDER BY id DESC")
-    mis_pedidos = cursor.fetchall()
+    # Cursor para los pedidos (como diccionario)
+    cursor_pedidos = conexion.cursor(cursor_factory=RealDictCursor)
+    cursor_pedidos.execute("SELECT * FROM pedidos_manzanas ORDER BY id DESC")
+    mis_pedidos = cursor_pedidos.fetchall()
     
-    cursor.close()
+    # Cursor normal para el inventario (como lista para que funcione con tu HTML)
+    cursor_inventario = conexion.cursor()
+    cursor_inventario.execute("SELECT color, stock_disponible FROM inventario_manzanas")
+    datos_inventario = cursor_inventario.fetchall()
+    
+    cursor_pedidos.close()
+    cursor_inventario.close()
     conexion.close()
     
-    return render_template("panel.html", pedidos=mis_pedidos)
+    return render_template("panel.html", pedidos=mis_pedidos, inventario=datos_inventario)
 
 # 2. Mostrar el formulario de encargo
 @app.route("/preencargo")
@@ -64,7 +71,7 @@ def guardar_pedido():
     telefono_pdf = f"{tel_limpio[:4]}-{tel_limpio[4:]}"
     telefono_wa = f"503{tel_limpio}"
     
-# --- B. VALIDACIÓN DE STOCK REAL EN BD ---
+    # --- B. VALIDACIÓN DE STOCK REAL EN BD ---
     conexion = conectar_bd()
     cursor = conexion.cursor()
     
@@ -103,7 +110,7 @@ def guardar_pedido():
     cursor.close()
     conexion.close()
 
-# --- C. CREAR EL PDF MEJORADO (CON FECHA Y DESGLOSE) ---
+    # --- C. CREAR EL PDF MEJORADO (CON FECHA Y DESGLOSE) ---
     fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M")
     
     pdf = FPDF()
@@ -167,7 +174,7 @@ def guardar_pedido():
     mensaje_codificado = urllib.parse.quote(mensaje)
     link_whatsapp = f"https://wa.me/{telefono_wa}?text={mensaje_codificado}"
     
-# PANTALLA DE TRANSICIÓN SEGURA
+    # PANTALLA DE TRANSICIÓN SEGURA
     html_respuesta = f"""
     <!DOCTYPE html>
     <html lang="es">
