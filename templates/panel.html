@@ -46,7 +46,7 @@
                             
                             <!-- Aquí agregamos el cálculo automático del Total -->
                             <span style="font-weight: bold; color: #22223b; font-size: 1.05em;">
-                                💵 Total: ${{ pedido.cantidad * 3 }}
+                                💵 Total: ${{ pedido.cantidad * 1 }}
                             </span>
 
                             <form action="/eliminar-pedido/{{ pedido.id }}" method="POST" style="margin: 0; padding: 0;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este pedido?');">
