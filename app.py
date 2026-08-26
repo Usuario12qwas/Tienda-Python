@@ -118,36 +118,30 @@ def guardar_pedido():
     mensaje_codificado = urllib.parse.quote(mensaje)
     link_whatsapp = f"https://wa.me/{telefono_wa}?text={mensaje_codificado}"
     
-    # PANTALLA DE TRANSICIÓN (Fíjate en las 3 comillas de abajo que abren)
+# PANTALLA DE TRANSICIÓN SEGURA
     html_respuesta = f"""
     <!DOCTYPE html>
     <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>Guardando Pedido...</title>
+        <title>Pedido Guardado</title>
     </head>
     <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; background-color: rgb(187, 182, 182); margin: 0;">
         <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); max-width: 500px;">
             <h2 style="color: #4a4e69; margin-bottom: 10px;">¡Pedido Guardado Exitosamente! 🍎</h2>
-            <p style="color: #666; font-size: 1.1em; margin-bottom: 30px;">Abriendo WhatsApp de forma automática...</p>
+            <p style="color: #666; font-size: 1.1em; margin-bottom: 30px;">La factura se ha creado. ¿Qué deseas hacer ahora?</p>
             
             <div style="display: flex; justify-content: center; gap: 15px;">
-                <a href="{link_whatsapp}" target="_blank" style="background: #25D366; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9em;">🟢 Abrir WhatsApp Manual</a>
-                <a href="/panel" style="background: #4a4e69; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9em;">Volver al Panel</a>
+                <!-- Abrir WhatsApp (Se abre en otra pestaña) -->
+                <a href="{link_whatsapp}" target="_blank" style="background: #25D366; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1em;">🟢 Enviar por WhatsApp</a>
+                
+                <!-- Volver al panel (En la misma pestaña) -->
+                <a href="/panel" style="background: #4a4e69; color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1em;">Volver al Panel</a>
             </div>
         </div>
-
-        <script>
-            window.open("{link_whatsapp}", "_blank");
-            
-            setTimeout(function() {{
-                window.location.href = "/panel";
-            }}, 1500);
-        </script>
     </body>
     </html>
     """
-    # Y fíjate en las 3 comillas de arriba que cierran
     
     return html_respuesta
 
