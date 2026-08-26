@@ -108,7 +108,7 @@
             <img src="{{ url_for('static', filename='manzana.jpeg') }}" alt="Manzana Encaramelada">
         </div>
         <div id="texto">
-            <form id="form" action="/procesar-pedido" method="POST">
+            <form id="form" action="/procesar-pedido" method="POST" autocomplete="off">>
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
