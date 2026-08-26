@@ -41,8 +41,14 @@
                             <span>🍎 {{ pedido.tipo_manzana }}</span>
                         </div>
                         
-                        <!-- Fila 3: Botón de Eliminar -->
-                        <div style="display: flex; justify-content: flex-end; margin-top: 5px;">
+                        <!-- NUEVA Fila 3: Total y Botón de Eliminar -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #e2dee4; padding-top: 10px;">
+                            
+                            <!-- Aquí agregamos el cálculo automático del Total -->
+                            <span style="font-weight: bold; color: #22223b; font-size: 1.05em;">
+                                💵 Total: ${{ pedido.cantidad * 3 }}
+                            </span>
+
                             <form action="/eliminar-pedido/{{ pedido.id }}" method="POST" style="margin: 0; padding: 0;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este pedido?');">
                                 <button type="submit" style="background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: bold;">
                                     🗑️ Eliminar
