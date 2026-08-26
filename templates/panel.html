@@ -21,6 +21,23 @@
 
     <div class="main-container">
         <div style="background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; border: 1px solid #dcd6df; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <!-- 📦 NUEVA SECCIÓN DE INVENTARIO 📦 -->
+            <div style="background: #4a4e69; padding: 20px; border-radius: 15px; margin-bottom: 30px; color: white;">
+                <h2 style="text-align: center; margin-top: 0; font-size: 1.5em;">📦 Inventario Actual</h2>
+                
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px;">
+                    {% for item in inventario %}
+                        <div style="background: white; color: #4a4e69; padding: 10px 15px; border-radius: 10px; font-weight: bold; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                            <span style="font-size: 0.9em; display: block; margin-bottom: 5px;">🍎 {{ item[0] }}</span>
+                            <!-- Si quedan pocas manzanas, el número se pone rojo, si hay suficientes, verde -->
+                            <span style="font-size: 1.4em; color: {% if item[1] < 5 %}#e63946{% else %}#25D366{% endif %};">
+                                {{ item[1] }} u.
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- ================================ -->
             <h1 style="color: #4a4e69; text-align: center; margin-bottom: 20px;">Pedidos Guardados</h1>
             
             <ul style="list-style: none; padding: 0;">
