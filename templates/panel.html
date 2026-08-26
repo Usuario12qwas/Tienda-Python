@@ -10,7 +10,7 @@
         .main-container {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Alinea las tarjetas arriba */
+            align-items: flex-start;
             min-height: 100vh;
             width: 100%;
             padding: 40px 20px;
@@ -22,12 +22,11 @@
             flex-wrap: wrap;
             gap: 25px;
             width: 100%;
-            max-width: 1000px; /* Ancho ampliado para dos columnas */
+            max-width: 1000px;
         }
         
-        /* Tarjeta Izquierda (Inventario) */
         .columna-izq {
-            flex: 1; /* Toma 1 parte del espacio */
+            flex: 1;
             min-width: 300px;
             background: white;
             padding: 30px;
@@ -37,9 +36,8 @@
             height: fit-content; 
         }
         
-        /* Tarjeta Derecha (Pedidos) */
         .columna-der {
-            flex: 2; /* Toma 2 partes del espacio (es más ancha) */
+            flex: 2;
             min-width: 350px;
             background: white;
             padding: 30px;
@@ -54,12 +52,10 @@
     <div class="main-container">
         <div class="panel-grid">
             
-            <!-- COLUMNA IZQUIERDA: INVENTARIO -->
             <div class="columna-izq">
                 <div style="background: #4a4e69; padding: 20px; border-radius: 15px; color: white;">
-                    <h2 style="text-align: center; margin-top: 0; font-size: 1.4em;">📦 Inventario</h2>
+                    <h2 style="text-align: center; margin-top: 0; font-size: 1.4em;">Inventario</h2>
                     
-                    <!-- Las tarjetas de manzanas ahora van en vertical -->
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         {% for item in inventario %}
                             <div style="background: white; color: #4a4e69; padding: 12px 15px; border-radius: 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
@@ -72,13 +68,11 @@
                     </div>
                 </div>
                 
-                <!-- Botón movido debajo del inventario -->
                 <div style="text-align: center; margin-top: 25px;">
                     <a href="/preencargo" style="display: inline-block; padding: 12px 25px; background: #4a4e69; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; width: 100%; box-sizing: border-box;">+ Nuevo Pedido</a>
                 </div>
             </div>
 
-            <!-- COLUMNA DERECHA: PEDIDOS -->
             <div class="columna-der">
                 <h1 style="color: #4a4e69; text-align: center; margin-bottom: 25px; margin-top: 0;">Pedidos Guardados</h1>
                 
@@ -86,7 +80,6 @@
                     {% for pedido in pedidos %}
                         <li style="background: #f4f4f9; margin-bottom: 15px; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; gap: 8px; border-left: 5px solid #9a8c98;">
                             
-                            <!-- Fila 1 -->
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <strong style="font-size: 1.1em; color: #22223b;">{{ pedido.nombre }}</strong>
                                 <span style="background: #9a8c98; color: white; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.9em;">
@@ -94,13 +87,11 @@
                                 </span>
                             </div>
 
-                            <!-- Fila 2 -->
                             <div style="display: flex; justify-content: space-between; font-size: 0.9em; color: #4a4e69;">
                                 <span> {{ pedido.telefono }}</span>
                                 <span> {{ pedido.tipo_manzana }}</span>
                             </div>
                             
-                            <!-- Fila 3 -->
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #e2dee4; padding-top: 10px;">
                                 <span style="font-weight: bold; color: #22223b; font-size: 1.05em;">
                                      Total: ${{ pedido.cantidad }}
