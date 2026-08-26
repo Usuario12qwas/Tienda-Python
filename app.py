@@ -4,6 +4,7 @@ from psycopg2.extras import RealDictCursor
 from fpdf import FPDF          # NUEVO: Para crear el PDF
 import urllib.parse            # NUEVO: Para crear el link de WhatsApp
 import os                      # NUEVO: Para crear carpetas
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -63,42 +64,90 @@ def guardar_pedido():
     telefono_pdf = f"{tel_limpio[:4]}-{tel_limpio[4:]}"
     telefono_wa = f"503{tel_limpio}"
     
-    # --- B. GUARDAR EN BASE DE DATOS ---
+# --- B. VALIDACIÓN DE STOCK REAL EN BD ---
     conexion = conectar_bd()
     cursor = conexion.cursor()
-    sql = "INSERT INTO pedidos_manzanas (nombre, telefono, cantidad, tipo_manzana) VALUES (%s, %s, %s, %s)"
-    cursor.execute(sql, (nombre, tel_limpio, cantidad, tipo_manzana))
+    
+    # 1. Consultar el stock actual de ese color específico
+    cursor.execute("SELECT stock_disponible FROM inventario_manzanas WHERE color = %s", (tipo_manzana,))
+    resultado = cursor.fetchone()
+    
+    if not resultado:
+        return "Error: El color seleccionado no existe en el inventario."
+        
+    stock_actual = resultado[0]
+    
+    # 2. Validar si hay stock suficiente para este pedido
+    if int(cantidad) > stock_actual:
+        cursor.close()
+        conexion.close()
+        return f"""
+        <div style='text-align:center; padding: 50px; font-family:Arial; background-color: rgb(187, 182, 182); height: 100vh;'>
+            <div style='background: white; padding: 40px; border-radius: 20px; display: inline-block;'>
+                <h2 style='color:#e63946;'>¡Uy! Stock Insuficiente 😢</h2>
+                <p>Solo nos quedan <b>{stock_actual}</b> manzanas de <b>{tipo_manzana}</b>.</p>
+                <br>
+                <a href='/preencargo' style='padding:10px 20px; background:#4a4e69; color:white; border-radius:10px; text-decoration:none;'>Volver al Formulario</a>
+            </div>
+        </div>
+        """
+    
+    # 3. Si hay stock, restamos las manzanas del inventario
+    cursor.execute("UPDATE inventario_manzanas SET stock_disponible = stock_disponible - %s WHERE color = %s", (cantidad, tipo_manzana))
+    
+    # 4. Y finalmente guardamos el pedido
+    sql_pedido = "INSERT INTO pedidos_manzanas (nombre, telefono, cantidad, tipo_manzana) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql_pedido, (nombre, tel_limpio, cantidad, tipo_manzana))
+    
     conexion.commit()
     cursor.close()
     conexion.close()
 
-    # --- C. CREAR EL PDF MEJORADO ---
+# --- C. CREAR EL PDF MEJORADO (CON FECHA Y DESGLOSE) ---
+    fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M")
+    
     pdf = FPDF()
     pdf.add_page()
     
-    pdf.rect(15, 15, 180, 130)
+    # Borde de la factura
+    pdf.rect(15, 15, 180, 140)
     pdf.ln(20)
     
+    # Encabezado
     pdf.set_font("Arial", 'B', 20)
-    pdf.cell(0, 10, txt="FACTURA DE PEDIDO", ln=True, align='C')
+    pdf.cell(0, 10, txt="TICKET DE COMPRA", ln=True, align='C')
     pdf.set_font("Arial", 'I', 12)
-    pdf.cell(0, 10, txt="Manzanas Encarameladas", ln=True, align='C')
-    pdf.ln(15)
+    pdf.cell(0, 10, txt="Manzanas Encarameladas - Sistema Web", ln=True, align='C')
     
-    pdf.set_font("Arial", size=14)
-    pdf.set_x(30)
-    pdf.cell(0, 12, txt=f"Cliente: {nombre}", ln=True)
-    pdf.set_x(30)
-    pdf.cell(0, 12, txt=f"Telefono: {telefono_pdf}", ln=True)
-    pdf.set_x(30)
-    pdf.cell(0, 12, txt=f"Producto: Manzanas tipo {tipo_manzana}", ln=True)
-    pdf.set_x(30)
-    pdf.cell(0, 12, txt=f"Cantidad: {cantidad} unidades", ln=True)
+    # Fecha alineada a la derecha
+    pdf.set_font("Arial", '', 10)
+    pdf.cell(0, 10, txt=f"Fecha y Hora: {fecha_actual}", ln=True, align='R')
+    pdf.ln(10)
     
+    # Datos del cliente y compra
+    pdf.set_font("Arial", size=12)
+    pdf.set_x(30)
+    pdf.cell(0, 10, txt=f"Datos del Cliente:", ln=True)
+    pdf.set_x(35)
+    pdf.cell(0, 8, txt=f"- Nombre: {nombre}", ln=True)
+    pdf.set_x(35)
+    pdf.cell(0, 8, txt=f"- Telefono: {telefono_pdf}", ln=True)
     pdf.ln(5)
-    pdf.set_font("Arial", 'B', 16)
+    
     pdf.set_x(30)
-    pdf.cell(0, 12, txt=f"TOTAL A PAGAR: ${total}", ln=True)
+    pdf.cell(0, 10, txt=f"Desglose de la Compra:", ln=True)
+    pdf.set_x(35)
+    pdf.cell(0, 8, txt=f"- Producto: Manzana {tipo_manzana}", ln=True)
+    pdf.set_x(35)
+    pdf.cell(0, 8, txt=f"- Precio Unitario: $1.00", ln=True)
+    pdf.set_x(35)
+    pdf.cell(0, 8, txt=f"- Cantidad: {cantidad} unidades", ln=True)
+    
+    # Total
+    pdf.ln(5)
+    pdf.set_font("Arial", 'B', 14)
+    pdf.set_x(30)
+    pdf.cell(0, 12, txt=f"TOTAL A PAGAR: ${cantidad}", ln=True)
     
     pdf.ln(15)
     pdf.set_font("Arial", 'I', 12)
