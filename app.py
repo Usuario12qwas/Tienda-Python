@@ -20,20 +20,27 @@ def inicio():
 @app.route("/panel")
 def panel():
     conexion = conectar_bd()
-    
-    cursor_pedidos = conexion.cursor(cursor_factory=RealDictCursor)
-    cursor_pedidos.execute("SELECT * FROM pedidos_manzanas ORDER BY id DESC")
-    mis_pedidos = cursor_pedidos.fetchall()
-    
-    cursor_inventario = conexion.cursor()
-    cursor_inventario.execute("SELECT color, stock_disponible FROM inventario_manzanas")
-    datos_inventario = cursor_inventario.fetchall()
-    
-    cursor_pedidos.close()
-    cursor_inventario.close()
+    cursor = conexion.cursor(cursor_factory=RealDictCursor)
+
+    # Inventario: sale de la tabla Producto
+    cursor.execute('SELECT id_producto, nombre_tipo_a, precio, cantidad FROM "Producto" ORDER BY nombre_tipo_a')
+    inventario = cursor.fetchall()
+
+    # Pedidos: une Factura + Cliente + Detalle_compra
+    cursor.execute('''
+        SELECT f.id_factura, f.num_fac, f.fecha,
+               c.nombre, c.apellido, c.correo,
+               d.nombre_p, d.cantidad, d.total
+        FROM "Factura" f
+        JOIN "Cliente" c ON c.id_cliente = f.id_cliente
+        JOIN "Detalle_compra" d ON d.id_factura = f.id_factura
+        ORDER BY f.id_factura DESC
+    ''')
+    pedidos = cursor.fetchall()
+
+    cursor.close()
     conexion.close()
-    
-    return render_template("panel.html", pedidos=mis_pedidos, inventario=datos_inventario)
+    return render_template("panel.html", pedidos=pedidos, inventario=inventario)
 
 @app.route("/preencargo")
 def preencargo():
@@ -182,19 +189,16 @@ def guardar_pedido():
     
     return html_respuesta
 
-# 5. Eliminar un pedido
 @app.route("/eliminar-pedido/<int:id>", methods=["POST"])
 def eliminar_pedido(id):
     conexion = conectar_bd()
     cursor = conexion.cursor()
-    
-    sql = "DELETE FROM pedidos_manzanas WHERE id = %s"
-    cursor.execute(sql, (id,))
+    cursor.execute('DELETE FROM "Detalle_compra" WHERE id_factura = %s', (id,))
+    cursor.execute('DELETE FROM "V_realizadas" WHERE id_factura = %s', (id,))
+    cursor.execute('DELETE FROM "Factura" WHERE id_factura = %s', (id,))
     conexion.commit()
-    
     cursor.close()
     conexion.close()
-    
     return redirect("/panel")
 
 if __name__ == "__main__":
