@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-URL_SUPABASE = "postgresql://postgres.ffozwpayyvzkrcjfhnuj:yRi_4G?zMGZLD-B@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+URL_SUPABASE = "postgresql://postgres.xethwmnjdveonvseuqgr:yRi_4G%3FzMGZLD-B@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
 
 def conectar_bd():
     return psycopg2.connect(URL_SUPABASE)
