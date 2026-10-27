@@ -54,15 +54,28 @@ def preencargo():
 
 @app.route("/procesar-pedido", methods=["POST"])
 def procesar_pedido():
-    nombre = request.form["nombre"]
-    telefono = request.form["telefono"]
+    nombre = request.form["nombre"].strip()
+    apellido = request.form["apellido"].strip()
+    correo = request.form["correo"].strip()
     cantidad = int(request.form["cantidad"])
-    tipo_manzana = request.form["manzana"]
-    
-    precio_por_manzana = 1
-    total = cantidad * precio_por_manzana
-    
-    return render_template("encargo.html", nombre=nombre, telefono=telefono, cantidad=cantidad, tipo_manzana=tipo_manzana, total=total)
+    id_producto = request.form["producto"]
+
+    conexion = conectar_bd()
+    cursor = conexion.cursor(cursor_factory=RealDictCursor)
+    cursor.execute('SELECT nombre_tipo_a, precio FROM "Producto" WHERE id_producto = %s', (id_producto,))
+    producto = cursor.fetchone()
+    cursor.close()
+    conexion.close()
+
+    if not producto:
+        return redirect("/preencargo")
+
+    total = cantidad * producto["precio"]
+
+    return render_template("encargo.html",
+        nombre=nombre, apellido=apellido, correo=correo,
+        cantidad=cantidad, id_producto=id_producto,
+        aderezo=producto["nombre_tipo_a"], precio=producto["precio"], total=total)
 
 # 4. Guardar en Supabase, crear PDF y redirigir a WhatsApp
 @app.route("/guardar-pedido", methods=["POST"])
