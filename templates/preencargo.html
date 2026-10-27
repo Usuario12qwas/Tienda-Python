@@ -108,27 +108,30 @@
             <img src="{{ url_for('static', filename='manzana.jpeg') }}" alt="Manzana Encaramelada">
         </div>
         <div id="texto">
-            <form id="form" action="/procesar-pedido" method="POST" autocomplete="off">>
+            <form id="form" action="/procesar-pedido" method="POST" autocomplete="off">
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
                 </div>
                 <div class="campo">
-                    <label for="telefono">Teléfono</label>
-                    <input id="telefono" name="telefono" type="tel" placeholder="Número de contacto" maxlength="8" required>
+                    <label for="apellido">Apellido</label>
+                    <input id="apellido" name="apellido" type="text" placeholder="Tu apellido" required>
+                </div>
+                <div class="campo">
+                    <label for="correo">Correo</label>
+                    <input id="correo" name="correo" type="email" placeholder="ejemplo@gmail.com" required>
                 </div>
                 <div class="campo">
                     <label for="cantidad">Cantidad</label>
                     <input id="cantidad" name="cantidad" type="number" placeholder="Max: 10" min="1" max="10" required>
                 </div>
                 <div class="campo">
-                    <label for="manzana">Manzana</label>
-                    <select id="manzana" name="manzana" required>
-                        <option value="" disabled selected>Selecciona tipo</option>
-                        <option value="Caramelo Azul">Caramelo Azul</option>
-                        <option value="Caramelo Rojo">Caramelo Rojo</option>
-                        <option value="Caramelo Amarillo">Caramelo Amarillo</option>
-                        <option value="Caramelo Anaranjado">Caramelo Anaranjado</option>
+                    <label for="producto">Aderezo</label>
+                    <select id="producto" name="producto" required>
+                        <option value="" disabled selected>Selecciona aderezo</option>
+                        {% for p in productos %}
+                            <option value="{{ p.id_producto }}">{{ p.nombre_tipo_a }} - ${{ "%.2f"|format(p.precio) }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div id="botones">
