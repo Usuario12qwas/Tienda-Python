@@ -77,23 +77,26 @@
     </style>
 </head>
 <body>
-
     <div class="invoice-card">
         <div class="invoice-header">
             FACTURA
         </div>
         <div class="invoice-body">
             <div class="field-row">
-                <span class="label">Nombre:</span>
-                <span class="line">{{ nombre }}</span>
+                <span class="label">Cliente:</span>
+                <span class="line">{{ nombre }} {{ apellido }}</span>
             </div>
             <div class="field-row">
-                <span class="label">Teléfono:</span>
-                <span class="line">{{ telefono }}</span>
+                <span class="label">Correo:</span>
+                <span class="line">{{ correo }}</span>
             </div>
             <div class="field-row">
                 <span class="label">Producto:</span>
-                <span class="line">{{ tipo_manzana }}</span>
+                <span class="line">Pancakes con {{ aderezo }}</span>
+            </div>
+            <div class="field-row">
+                <span class="label">Precio unitario:</span>
+                <span class="line">${{ "%.2f"|format(precio) }}</span>
             </div>
             <div class="field-row">
                 <span class="label">Cantidad:</span>
@@ -101,18 +104,16 @@
             </div>
             <div class="total-row">
                 <span>Total:</span>
-                <span>${{ total }}</span>
+                <span>${{ "%.2f"|format(total) }}</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-top: 25px;">
                 <a href="/preencargo" style="padding: 10px 20px; background-color: #9a8c98; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">Borrar</a>
                 <form action="/guardar-pedido" method="POST" style="margin: 0; padding: 0; box-shadow: none; border: none; width: auto;">
-                    <!-- Datos ocultos que viajan a la base de datos -->
                     <input type="hidden" name="nombre" value="{{ nombre }}">
-                    <input type="hidden" name="telefono" value="{{ telefono }}">
-                    <input type="hidden" name="tipo_manzana" value="{{ tipo_manzana }}">
+                    <input type="hidden" name="apellido" value="{{ apellido }}">
+                    <input type="hidden" name="correo" value="{{ correo }}">
+                    <input type="hidden" name="id_producto" value="{{ id_producto }}">
                     <input type="hidden" name="cantidad" value="{{ cantidad }}">
-                    <input type="hidden" name="total" value="{{ total }}">
-                    
                     <button type="submit" class="btn-guardar">Guardar</button>
                 </form>
             </div>
