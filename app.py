@@ -44,7 +44,13 @@ def panel():
 
 @app.route("/preencargo")
 def preencargo():
-    return render_template("preencargo.html")
+    conexion = conectar_bd()
+    cursor = conexion.cursor(cursor_factory=RealDictCursor)
+    cursor.execute('SELECT id_producto, nombre_tipo_a, precio, cantidad FROM "Producto" WHERE cantidad > 0 ORDER BY nombre_tipo_a')
+    productos = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return render_template("preencargo.html", productos=productos)
 
 @app.route("/procesar-pedido", methods=["POST"])
 def procesar_pedido():
