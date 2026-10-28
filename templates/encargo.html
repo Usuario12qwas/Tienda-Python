@@ -90,14 +90,18 @@
                 <span class="label">Correo:</span>
                 <span class="line">{{ correo }}</span>
             </div>
-            <div class="field-row">
-                <span class="label">Producto:</span>
-                <span class="line">Pancakes con {{ aderezo }}</span>
-            </div>
-            <div class="field-row">
-                <span class="label">Precio unitario:</span>
-                <span class="line">${{ "%.2f"|format(precio) }}</span>
-            </div>
+<div class="field-row">
+    <span class="label">Pancakes:</span>
+    <span class="line">${{ "%.2f"|format(precio_pancakes) }}</span>
+</div>
+<div class="field-row">
+    <span class="label">Aderezo:</span>
+    <span class="line">{{ nombre_aderezo }}{% if precio_aderezo > 0 %} (+${{ "%.2f"|format(precio_aderezo) }}){% endif %}</span>
+</div>
+<div class="field-row">
+    <span class="label">Precio por orden:</span>
+    <span class="line">${{ "%.2f"|format(precio_unit) }}</span>
+</div>
             <div class="field-row">
                 <span class="label">Cantidad:</span>
                 <span class="line">{{ cantidad }}</span>
