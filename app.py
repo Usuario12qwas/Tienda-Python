@@ -46,11 +46,11 @@ def panel():
 def preencargo():
     conexion = conectar_bd()
     cursor = conexion.cursor(cursor_factory=RealDictCursor)
-    cursor.execute('SELECT id_producto, nombre_tipo_a, precio, cantidad FROM "Producto" WHERE cantidad > 0 ORDER BY nombre_tipo_a')
-    productos = cursor.fetchall()
+    cursor.execute('SELECT id_producto, nombre_tipo_a, precio FROM "Producto" WHERE id_producto LIKE %s AND cantidad > 0 ORDER BY precio, nombre_tipo_a', ("A%",))
+    aderezos = cursor.fetchall()
     cursor.close()
     conexion.close()
-    return render_template("preencargo.html", productos=productos)
+    return render_template("preencargo.html", aderezos=aderezos)
 
 @app.route("/procesar-pedido", methods=["POST"])
 def procesar_pedido():
@@ -58,24 +58,31 @@ def procesar_pedido():
     apellido = request.form["apellido"].strip()
     correo = request.form["correo"].strip()
     cantidad = int(request.form["cantidad"])
-    id_producto = request.form["producto"]
+    id_aderezo = request.form["aderezo"]
 
     conexion = conectar_bd()
     cursor = conexion.cursor(cursor_factory=RealDictCursor)
-    cursor.execute('SELECT nombre_tipo_a, precio FROM "Producto" WHERE id_producto = %s', (id_producto,))
-    producto = cursor.fetchone()
+    cursor.execute('SELECT precio FROM "Producto" WHERE id_producto = %s', (ID_PANCAKES,))
+    pancakes = cursor.fetchone()
+
+    aderezo = None
+    if id_aderezo != "ninguno":
+        cursor.execute('SELECT nombre_tipo_a, precio FROM "Producto" WHERE id_producto = %s', (id_aderezo,))
+        aderezo = cursor.fetchone()
     cursor.close()
     conexion.close()
 
-    if not producto:
-        return redirect("/preencargo")
-
-    total = cantidad * producto["precio"]
+    precio_pancakes = pancakes["precio"]
+    precio_aderezo = aderezo["precio"] if aderezo else 0
+    nombre_aderezo = aderezo["nombre_tipo_a"] if aderezo else "Sin aderezo"
+    precio_unit = precio_pancakes + precio_aderezo
+    total = cantidad * precio_unit
 
     return render_template("encargo.html",
-        nombre=nombre, apellido=apellido, correo=correo,
-        cantidad=cantidad, id_producto=id_producto,
-        aderezo=producto["nombre_tipo_a"], precio=producto["precio"], total=total)
+        nombre=nombre, apellido=apellido, correo=correo, cantidad=cantidad,
+        id_aderezo=id_aderezo, nombre_aderezo=nombre_aderezo,
+        precio_pancakes=precio_pancakes, precio_aderezo=precio_aderezo,
+        precio_unit=precio_unit, total=total)
 
 # 4. Guardar en Supabase, crear PDF y redirigir a WhatsApp
 @app.route("/guardar-pedido", methods=["POST"])
