@@ -125,15 +125,16 @@
                     <label for="cantidad">Cantidad</label>
                     <input id="cantidad" name="cantidad" type="number" placeholder="Max: 10" min="1" max="10" required>
                 </div>
-                <div class="campo">
-                    <label for="producto">Aderezo</label>
-                    <select id="producto" name="producto" required>
-                        <option value="" disabled selected>Selecciona aderezo</option>
-                        {% for p in productos %}
-                            <option value="{{ p.id_producto }}">{{ p.nombre_tipo_a }} - ${{ "%.2f"|format(p.precio) }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+<div class="campo">
+    <label for="aderezo">Aderezo</label>
+    <select id="aderezo" name="aderezo" required>
+        <option value="" disabled selected>Selecciona aderezo</option>
+        <option value="ninguno">Sin aderezo</option>
+        {% for a in aderezos %}
+            <option value="{{ a.id_producto }}">{{ a.nombre_tipo_a }}{% if a.precio > 0 %} (+${{ "%.2f"|format(a.precio) }}){% else %} (incluido){% endif %}</option>
+        {% endfor %}
+    </select>
+</div>
                 <div id="botones">
                     <button id="borrar" type="button" onclick="window.location.href='/panel'">Panel</button>
                     <button id="continuar" type="submit">Siguiente</button>
