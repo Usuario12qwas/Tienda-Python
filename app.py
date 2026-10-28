@@ -52,8 +52,10 @@ def preencargo():
     conexion.close()
     return render_template("preencargo.html", aderezos=aderezos)
 
-@app.route("/procesar-pedido", methods=["POST"])
+@app.route("/procesar-pedido", methods=["GET", "POST"])
 def procesar_pedido():
+    if request.method == "GET":
+        return redirect("/preencargo")
     nombre = request.form["nombre"].strip()
     apellido = request.form["apellido"].strip()
     correo = request.form["correo"].strip()
